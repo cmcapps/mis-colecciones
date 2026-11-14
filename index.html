@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mis Colecciones</title>
+<meta name="theme-color" content="#0e0d0c">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0d0c; --panel:#151311; --line:#2a2622; --text:#efe8dc; --muted:#8e857a;
+    --oro:#c9a96e; --oro-claro:#e6cf9f;
+    --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:Jost, 'Helvetica Neue', Arial, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%}
+  body{
+    background:var(--bg); color:var(--text); font-family:var(--sans); font-weight:300;
+    -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 50% -120px, rgba(201,169,110,.10), transparent 70%);
+  }
+
+  /* ---------- PORTADA ---------- */
+  #inicio{max-width:1120px;margin:0 auto;padding:calc(56px + env(safe-area-inset-top)) 28px 48px;
+          opacity:0;animation:aparecer .9s ease .1s forwards}
+  @keyframes aparecer{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  header{text-align:center;margin-bottom:56px}
+  .antetitulo{font-size:11px;letter-spacing:.38em;text-transform:uppercase;color:var(--oro);font-weight:400}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,7.5vw,84px);line-height:1;margin:18px 0 20px;letter-spacing:.01em}
+  h1 em{font-style:italic;color:var(--oro-claro)}
+  .filete{display:flex;align-items:center;justify-content:center;gap:14px}
+  .filete::before,.filete::after{content:"";height:1px;width:min(120px,22vw);background:linear-gradient(90deg,transparent,var(--oro))}
+  .filete::after{transform:scaleX(-1)}
+  .filete span{white-space:nowrap;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--muted)}
+
+  .galeria{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .pieza{
+    position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;
+    padding:38px 22px 30px;border:1px solid var(--line);border-radius:4px;
+    background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,0));
+    color:inherit;font:inherit;cursor:pointer;
+    transition:border-color .4s ease, transform .4s ease, background .4s ease;
+  }
+  .pieza::after{content:"";position:absolute;inset:7px;border:1px solid transparent;border-radius:2px;pointer-events:none;transition:border-color .4s ease}
+  .pieza:hover{border-color:rgba(201,169,110,.55);transform:translateY(-3px);background:linear-gradient(180deg,rgba(201,169,110,.06),rgba(255,255,255,0))}
+  .pieza:hover::after{border-color:rgba(201,169,110,.22)}
+  .pieza:focus-visible{outline:1px solid var(--oro);outline-offset:4px}
+  .numero{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--oro);letter-spacing:.1em;margin-bottom:22px}
+  .icono{width:112px;height:112px;border-radius:26px;box-shadow:0 18px 40px -18px rgba(0,0,0,.9);transition:transform .5s ease}
+  .pieza:hover .icono{transform:scale(1.04)}
+  .pieza h2{font-family:var(--serif);font-weight:500;font-size:30px;margin:24px 0 8px;letter-spacing:.01em}
+  .pieza p{font-size:13px;line-height:1.55;color:var(--muted);max-width:200px}
+  .estado{margin-top:20px;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+  .estado::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--oro);margin-right:9px;vertical-align:2px}
+  .pieza.pendiente{cursor:default}
+  .pieza.pendiente .icono{filter:grayscale(.5) brightness(.75)}
+  .pieza.pendiente .estado::before{background:transparent;border:1px solid var(--muted)}
+  .pieza.pendiente:hover{transform:none;border-color:var(--line);background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,0))}
+  .pieza.pendiente:hover::after{border-color:transparent}
+
+  footer{margin-top:64px;text-align:center;font-family:var(--serif);font-style:italic;color:var(--muted);font-size:15px}
+
+  /* ---------- VISOR ---------- */
+  #visor{position:fixed;inset:0;display:none;flex-direction:column;background:var(--bg);z-index:10}
+  #visor.abierto{display:flex}
+  .barra{display:flex;align-items:center;gap:14px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .boton{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:transparent;color:var(--text);
+         font:400 12px var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:9px 14px;border-radius:3px;cursor:pointer;text-decoration:none;white-space:nowrap;transition:border-color .3s}
+  .boton:hover{border-color:var(--oro)}
+  .titulo{flex:1;display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:24px;overflow:hidden;white-space:nowrap}
+  .titulo img{width:30px;height:30px;border-radius:8px}
+  .pestanas{display:flex;gap:6px}
+  .pestanas button{background:none;border:1px solid transparent;border-radius:9px;padding:3px;cursor:pointer;opacity:.55;transition:opacity .3s,border-color .3s}
+  .pestanas button:hover{opacity:1}
+  .pestanas button.activa{opacity:1;border-color:var(--oro)}
+  .pestanas img{width:30px;height:30px;border-radius:7px;display:block}
+  #marco{flex:1;width:100%;border:0;background:var(--bg)}
+
+  @media (max-width:900px){ .galeria{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:560px){
+    #inicio{padding-top:calc(36px + env(safe-area-inset-top));padding-inline:18px}
+    header{margin-bottom:34px}
+    .galeria{gap:12px}
+    .pieza{padding:24px 10px 20px}
+    .numero{margin-bottom:14px}
+    .icono{width:78px;height:78px;border-radius:19px}
+    .pieza h2{font-size:23px;margin:16px 0 0}
+    .pieza p{display:none}
+    .estado{margin-top:10px;font-size:9px;letter-spacing:.22em}
+    .boton .texto,.pestanas{display:none}
+    .titulo{font-size:21px}
+  }
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} #inicio{opacity:1} }
+</style>
+</head>
+<body>
+
+<main id="inicio">
+  <header>
+    <div class="antetitulo">Colección privada</div>
+    <h1>Mis <em>Colecciones</em></h1>
+    <div class="filete"><span id="fecha"></span></div>
+  </header>
+  <section class="galeria" id="galeria"></section>
+  <footer>Carlos Mercader · coleccionista</footer>
+</main>
+
+<div id="visor" aria-hidden="true">
+  <div class="barra">
+    <button class="boton" id="volver" title="Volver a Mis Colecciones">← <span class="texto">Colecciones</span></button>
+    <div class="titulo" id="tituloVisor"></div>
+    <nav class="pestanas" id="pestanas"></nav>
+    <a class="boton" id="abrirAparte" target="_blank" rel="noopener" title="Abrir en pestaña nueva">↗ <span class="texto">Abrir aparte</span></a>
+  </div>
+  <iframe id="marco" title="Colección" allow="clipboard-write; camera; fullscreen"></iframe>
+</div>
+
+<script>
+/* =====================================================================
+   CONFIGURACIÓN — pega aquí la URL /exec de cada web app de Apps Script
+   (Implementar → Gestionar implementaciones → URL de la aplicación web).
+   modo: 'dentro' → se abre dentro de Mis Colecciones (doGet con ALLOWALL)
+         'aparte' → se abre siempre en pestaña nueva
+   ===================================================================== */
+const COLECCIONES = [
+  { id:'videojuegos', nombre:'Videojuegos', icono:'iconos/videojuegos.svg', desc:'Mi videojuegoteca, ordenada por plataformas', url:'', modo:'dentro' },
+  { id:'vinilos',     nombre:'Vinilos',     icono:'iconos/vinilos.svg',     desc:'Discos de mi colección, al día con Discogs',  url:'', modo:'dentro' },
+  { id:'peliculas',   nombre:'Películas',   icono:'iconos/peliculas.svg',   desc:'Mi filmoteca',                                 url:'', modo:'dentro' },
+  { id:'comics',      nombre:'Cómics',      icono:'iconos/comics.svg',      desc:'Series, tomos y números',                      url:'', modo:'dentro' },
+];
+
+const ROMANOS = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+const $ = s => document.querySelector(s);
+const galeria = $('#galeria'), visor = $('#visor'), marco = $('#marco');
+
+$('#fecha').textContent = new Date().toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'});
+
+function pintar(){
+  galeria.innerHTML = '';
+  COLECCIONES.forEach((c,i) => {
+    const b = document.createElement('button');
+    b.className = 'pieza' + (c.url ? '' : ' pendiente');
+    b.innerHTML = `<span class="numero">${ROMANOS[i] || i+1}</span>
+      <img class="icono" src="${c.icono}" alt="">
+      <h2>${c.nombre}</h2><p>${c.desc}</p>
+      <span class="estado">${c.url ? 'Abrir' : 'Próximamente'}</span>`;
+    if (c.url) b.onclick = () => abrir(c.id); else b.setAttribute('aria-disabled','true');
+    galeria.appendChild(b);
+  });
+  const nav = $('#pestanas'); nav.innerHTML = '';
+  COLECCIONES.filter(c => c.url).forEach(c => {
+    const t = document.createElement('button');
+    t.innerHTML = `<img src="${c.icono}" alt="">`; t.title = c.nombre; t.dataset.id = c.id;
+    t.onclick = () => abrir(c.id);
+    nav.appendChild(t);
+  });
+}
+
+function abrir(id, desdeHistorial){
+  const c = COLECCIONES.find(x => x.id === id);
+  if (!c || !c.url) return;
+  if (c.modo === 'aparte'){ window.open(c.url, '_blank', 'noopener'); return; }
+  $('#tituloVisor').innerHTML = `<img src="${c.icono}" alt="">${c.nombre}`;
+  $('#abrirAparte').href = c.url;
+  document.querySelectorAll('#pestanas button').forEach(b => b.classList.toggle('activa', b.dataset.id === id));
+  if (marco.dataset.id !== id){ marco.src = c.url; marco.dataset.id = id; }
+  visor.classList.add('abierto'); visor.setAttribute('aria-hidden','false');
+  document.title = `${c.nombre} · Mis Colecciones`;
+  if (!desdeHistorial) history.pushState({id}, '', '#' + id);
+}
+
+function cerrar(desdeHistorial){
+  visor.classList.remove('abierto'); visor.setAttribute('aria-hidden','true');
+  document.title = 'Mis Colecciones';
+  if (!desdeHistorial) history.pushState({}, '', location.pathname);
+}
+
+$('#volver').onclick = () => cerrar();
+window.addEventListener('popstate', e => {
+  const id = (e.state && e.state.id) || location.hash.slice(1);
+  id ? abrir(id, true) : cerrar(true);
+});
+
+pintar();
+if (location.hash) abrir(location.hash.slice(1), true);
+</script>
+</body>
+</html>
