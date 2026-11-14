@@ -6,10 +6,13 @@
   <rect width="512" height="512" rx="112" fill="url(#bg)"/>
   <rect x="26" y="26" width="460" height="460" rx="90" fill="none" stroke="url(#au)" stroke-width="3" opacity=".55"/>
   <g fill="none" stroke="url(#au)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M256 186c-40-26-90-30-136-20v214c46-10 96-6 136 20 40-26 90-30 136-20V166c-46-10-96-6-136 20z"/>
-    <path d="M256 186v214"/>
-    <path d="M300 104h104c14 0 24 10 24 24v36c0 14-10 24-24 24h-58l-26 22v-22h-20c-14 0-24-10-24-24v-36c0-14 10-24 24-24z" stroke-width="10"/>
-    <path d="M316 140h72" stroke-width="8" opacity=".8"/>
-    <path d="M150 238h70M150 272h70M292 238h70M292 272h50" stroke-width="6" opacity=".7"/>
+    <path d="M256 77 L297 125 L355 111 L362 167 L441 166 L416 221 L448 258 L405 292 L434 347 L368 354 L356 407 L294 381 L256 444 L214 394 L161 400 L149 350 L76 347 L100 294 L60 258 L111 225 L72 167 L144 162 L159 114 L216 128Z" stroke-width="8"/>
+    <g transform="rotate(-7 256 256) translate(-10 0)">
+      <path d="M152 300V210h30a24 24 0 0 1 0 48h-30"/>
+      <ellipse cx="240" cy="255" rx="30" ry="45"/>
+      <path d="M290 210l14 90 16-62 16 62 14-90"/>
+      <path d="M382 210v60"/>
+      <circle cx="382" cy="295" r="6" fill="url(#au)" stroke="none"/>
+    </g>
   </g>
 </svg>
