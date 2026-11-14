@@ -6,8 +6,8 @@
 <title>Mis Colecciones</title>
 <meta name="theme-color" content="#0e0d0c">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="icon-app.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -170,7 +170,7 @@ function abrir(id, desdeHistorial){
   $('#tituloVisor').innerHTML = `<img src="${c.icono}" alt="">${c.nombre}`;
   $('#abrirAparte').href = c.url;
   document.querySelectorAll('#pestanas button').forEach(b => b.classList.toggle('activa', b.dataset.id === id));
-  if (marco.dataset.id !== id){ marco.src = c.url; marco.dataset.id = id; }
+  if (marco.dataset.id !== id){ marco.src = c.url + (c.url.includes('?') ? '&' : '?') + 'embed=1'; marco.dataset.id = id; }
   visor.classList.add('abierto'); visor.setAttribute('aria-hidden','false');
   document.title = `${c.nombre} · Mis Colecciones`;
   if (!desdeHistorial) history.pushState({id}, '', '#' + id);
